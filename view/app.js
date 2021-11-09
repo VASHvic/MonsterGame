@@ -1,4 +1,13 @@
-import hero from "../bussines-logic/hero.js";
-let question = prompt(`Hero attacks ${hero.attack()}`);
+import hero from "../bussines-logic/heroLogic.js";
+import * as monsterlogic from "../bussines-logic/monsterLogic.js";
 
-console.log(question);
+let questionName = prompt("Hello champion! What is your name?");
+const player = new hero(questionName || "Anonymous");
+
+const numberOfEnemies = monsterlogic.generateMonsterNumber();
+
+const [...monsterArray] = monsterlogic.createArrayOfMonsters(numberOfEnemies);
+
+console.log(`Carefull ${player.name}! ${numberOfEnemies} monsters appeared!`);
+
+console.log(monsterArray);
