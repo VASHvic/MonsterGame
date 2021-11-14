@@ -8,24 +8,26 @@ const status = new Map([
 /**
  *
  * @param {player object} p
- * @param {hero damage variable} hdmg
- * @param {monser damage variable} mdmg
+ * @param {monster object} p
  * @param {monster array} arr
  */
-
-const showRoundStatus = (p, arr, hdmg = 0, mdmg = 0) => {
+const showRoundStatus = (hero, monster, arr) => {
   console.log(
     `Round status: 
-                ${p.name} - D: ${hdmg}, H: ${p.health}, P: ${p.potions}
+                ${hero.name} - D: ${hero.lastDmg}, H: ${hero.health}, P: ${hero.potions}
                 There is still ${arr.length } monsters alive!
-                ${arr[arr.length - 1].name } - D: ${mdmg}, H: ${arr[arr.length - 1].health}`
+                ${monster.name } - D: ${monster.lastDmg}, H: ${monster.health}`
   );
 };
 const resultOfGame = (player) => {
-  if (player.health > 0) {
-    console.log(`Victory! ${player["name"]} defeated all monsters.`);
+  if (player.escapes === true) {
+    console.log(
+      `${player["name"]} escapes and lives to fight another day \u{1F977}`
+    );
+  } else if (player.health > 0) {
+    console.log(`Victory! ${player["name"]} defeated all monsters. \u{1F3C6}`);
   } else {
-    console.log(`${player["name"]} died`);
+    console.log(`\u{1F547} ${player["name"]} died \u{1F547}`);
   }
   return setTimeout(() => showStats(status, player), 2000);
 };
@@ -37,7 +39,7 @@ const showStats = (map, hero) => {
   ***********************
   Number of player atacks: ${map.get("HeroNumOfAttacks")}
   Number of monster atacks: ${map.get("MonsterNumOfAttacks")}
-  Total damage made by the player: ${map.get("totalHeroDmg")}
+  Total damage made by ${hero.name}: ${map.get("totalHeroDmg")}
   Total damage made by the monsters: ${240 - 70 * hero.potions - hero.health}
   Total number of potions consumed: ${2 - hero.potions}`);
   return setTimeout(gameOverMsg, 2000);
