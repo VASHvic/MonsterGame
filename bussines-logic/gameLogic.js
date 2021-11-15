@@ -40,7 +40,7 @@ const showStats = (map, hero) => {
   Number of player atacks: ${map.get("HeroNumOfAttacks")}
   Number of monster atacks: ${map.get("MonsterNumOfAttacks")}
   Total damage made by ${hero.name}: ${map.get("totalHeroDmg")}
-  Total damage made by the monsters: ${240 - 70 * hero.potions - hero.health}
+  Total damage made by the monsters: ${hero.getHpLost()};
   Total number of potions consumed: ${2 - hero.potions}`);
   return setTimeout(gameOverMsg, 2000);
 };

@@ -3,6 +3,7 @@ function Hero(name) {
   this.health = 100;
   this.potions = 2;
   this.lastDmg = 0;
+  this.hpLost = [];
   this.escapes = false;
   this.attack = () => {
     this.lastDmg = Math.floor(Math.random() * (20 - 10)) + 10;
@@ -18,6 +19,12 @@ function Hero(name) {
   };
   this.loseHealth = function (dmg) {
     this.health -= dmg;
+    this.hpLost.push(dmg);
+  };
+  this.getHpLost = function () {
+    return this.hpLost.reduce(function (a, b) {
+      return a + b;
+    });
   };
 }
 

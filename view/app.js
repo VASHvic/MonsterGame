@@ -14,7 +14,7 @@ import {
 //Game starts, create and check hero and monsters + add them into an array of objs
 let player = createHero();
 //prettier-ignore
-const [...monsterArray] = createArrayOfMonsters(generateMonsterNumberOfEnemies());
+const monsterArray = createArrayOfMonsters(generateMonsterNumberOfEnemies());
 
 //prettier-ignore
 console.log(`Carefull ${player.name}! ${monsterArray.length} monsters appeared!`);
@@ -46,10 +46,11 @@ while (monsterArray[0]) {
         player.loseHealth(CURRENT_MONSTER.attack());
         //prettier-ignore
         status.set("MonsterNumOfAttacks",status.get("MonsterNumOfAttacks") + 1);
-        //check if player is alive
-        player.health < 1
-          ? monsterArray.shift() //ends the loop
-          : showRoundStatus(player, CURRENT_MONSTER, monsterArray);
+        if (player.health < 1) {
+          player.health = 0;
+          monsterArray.length = 0; //ends the loop
+        }
+        showRoundStatus(player, CURRENT_MONSTER, monsterArray);
       }
       break;
     case "H":
