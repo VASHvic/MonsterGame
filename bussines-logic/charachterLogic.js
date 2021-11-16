@@ -24,7 +24,7 @@ function Hero(name) {
   this.getHpLost = function () {
     return this.hpLost.reduce(function (a, b) {
       return a + b;
-    });
+    }, 0);
   };
 }
 
@@ -65,7 +65,7 @@ function createHero() {
 }
 function checkMonsterNames(arr) {
   arr.forEach((monster) => {
-    const monsterPattern = /[a-zA-Z]+[0-9]?$/;
+    const monsterPattern = /^[a-zA-Z]+[0-9]?$/;
     monster.name =
       prompt(
         `Do you want to change the name of ${monster.name}?`,

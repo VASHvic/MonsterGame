@@ -27,7 +27,7 @@ const resultOfGame = (player) => {
   } else if (player.health > 0) {
     console.log(`Victory! ${player["name"]} defeated all monsters. \u{1F3C6}`);
   } else {
-    console.log(`\u{1F547} ${player["name"]} died \u{1F547}`);
+    console.log(`\u{2671} ${player["name"]} died \u{2671}`);
   }
   return setTimeout(() => showStats(status, player), 2000);
 };
