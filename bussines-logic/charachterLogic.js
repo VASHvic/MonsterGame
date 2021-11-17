@@ -15,7 +15,6 @@ function Hero(name) {
     if (this.health > 100) {
       this.health = 100;
     }
-    console.log(`${this.name} drinks a healing potion!`);
   };
   this.loseHealth = function (dmg) {
     this.health -= dmg;
@@ -40,6 +39,12 @@ function Monster(name) {
     this.health -= dmg;
   };
 }
+
+const status = new Map([
+  ["HeroNumOfAttacks", 0],
+  ["MonsterNumOfAttacks", 0],
+  ["totalHeroDmg", 0],
+]);
 
 const generateMonsterNumberOfEnemies = () => Math.floor(Math.random() * 3) + 1;
 
@@ -83,6 +88,7 @@ function checkMonsterNames(arr) {
 export {
   Hero,
   Monster,
+  status,
   generateMonsterNumberOfEnemies,
   createArrayOfMonsters,
   createHero,

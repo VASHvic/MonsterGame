@@ -3,13 +3,25 @@ import {
   createArrayOfMonsters,
   createHero,
   checkMonsterNames,
+  status,
 } from "../bussines-logic/charachterLogic.js";
 
-import {
-  showRoundStatus,
-  status,
-  resultOfGame,
-} from "../bussines-logic/gameLogic.js";
+//function to show the game stats after each round
+//prettier-ignore
+/**
+ *
+ * @param {player object} p
+ * @param {monster object} p
+ * @param {monster array} arr
+ */
+const showRoundStatus = (hero, monster, arr) => {
+  console.log(
+    `Round status: 
+                ${hero.name} - D: ${hero.lastDmg}, H: ${hero.health}, P: ${hero.potions}
+                There is still ${arr.length } monsters alive!
+                ${monster.name } - D: ${monster.lastDmg}, H: ${monster.health}`
+  );
+};
 
 //Game starts, create and check hero and monsters + add them into an array of objs
 let player = createHero();
@@ -25,6 +37,7 @@ checkMonsterNames(monsterArray);
 while (monsterArray[0]) {
   // saved the last monster of the stack for easier syntax
   let CURRENT_MONSTER = monsterArray[monsterArray.length - 1];
+
   console.log(`Fighting against ${CURRENT_MONSTER.name}!`);
   const action = prompt("Choose your next action: A to atack - H to heal", "A");
   switch (action) {
@@ -57,6 +70,7 @@ while (monsterArray[0]) {
     case "h":
       if (player.potions > 0) {
         player.drink();
+        console.log(`${player.name} drinks a healing potion!`);
         player.loseHealth(CURRENT_MONSTER.attack());
         showRoundStatus(player, CURRENT_MONSTER, monsterArray);
       } else {
@@ -75,4 +89,35 @@ while (monsterArray[0]) {
   }
 }
 
+//chain of messages to show when the game ends
 setTimeout(() => resultOfGame(player), 2000);
+
+const resultOfGame = (player) => {
+  if (player.escapes === true) {
+    console.log(
+      `${player["name"]} escapes and lives to fight another day \u{1F977}`
+    );
+  } else if (player.health > 0) {
+    console.log(`Victory! ${player["name"]} defeated all monsters. \u{1F3C6}`);
+  } else {
+    console.log(`\u{2671} ${player["name"]} died \u{2671}`);
+  }
+  return setTimeout(() => showStats(status, player), 2000);
+};
+
+const showStats = (map, hero) => {
+  console.log(`
+  ***********************
+      GAME STATISTICS
+  ***********************
+  Number of player atacks: ${map.get("HeroNumOfAttacks")}
+  Number of monster atacks: ${map.get("MonsterNumOfAttacks")}
+  Total damage made by ${hero.name}: ${map.get("totalHeroDmg")}
+  Total damage made by the monsters: ${hero.getHpLost()}
+  Total number of potions consumed: ${2 - hero.potions}`);
+  return setTimeout(gameOverMsg, 2000);
+};
+
+const gameOverMsg = () => {
+  console.log("GAME OVER");
+};
