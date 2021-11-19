@@ -1,4 +1,4 @@
-import * as character from "../bussines-logic/charachterLogic.js";
+import * as character from "../bussines-logic/logic.js";
 
 describe("Test Suite for Hero Object", () => {
   const hero = new character.Hero("Anonymous");

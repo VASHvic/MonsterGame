@@ -1,12 +1,17 @@
+import { controls } from "./config.js";
+
 function Hero(name) {
   this.name = name;
-  this.health = 100;
-  this.potions = 2;
+  this.health = controls.heroHealth;
+  this.potions = controls.heroPotions;
   this.lastDmg = 0;
   this.hpLost = [];
   this.escapes = false;
+  //return and save dmg betwen max min
   this.attack = () => {
-    this.lastDmg = Math.floor(Math.random() * (20 - 10)) + 10;
+    this.lastDmg =
+      Math.floor(Math.random() * (controls.heroMaxDmg - controls.heroMinDmg)) +
+      controls.heroMinDmg;
     return this.lastDmg;
   };
   this.drink = function () {
@@ -29,10 +34,13 @@ function Hero(name) {
 
 function Monster(name) {
   this.name = name;
-  this.health = 100;
+  this.health = controls.monsterHealth;
   this.lastDmg = 0;
   this.attack = () => {
-    this.lastDmg = Math.floor(Math.random() * (20 - 10)) + 10;
+    this.lastDmg =
+      Math.floor(
+        Math.random() * (controls.monsterMaxDmg - controls.monsterMinDmg)
+      ) + controls.monsterMinDmg;
     return this.lastDmg;
   };
   this.loseHealth = function (dmg) {
@@ -46,7 +54,16 @@ const status = new Map([
   ["totalHeroDmg", 0],
 ]);
 
-const generateMonsterNumberOfEnemies = () => Math.floor(Math.random() * 3) + 1;
+const checkPlayerName = (question) => {
+  const heroPattern = /^[A-Z][A-Za-z]+$/;
+  if (question === null || heroPattern.test(question) === true) {
+    const player = new Hero(question || "Anonymous");
+    return player;
+  }
+};
+
+const generateMonsterNumberOfEnemies = () =>
+  Math.floor(Math.random() * controls.maxMonsters) + controls.minMonsters;
 
 const createArrayOfMonsters = (number) => {
   const monsterArray = [];
@@ -55,32 +72,13 @@ const createArrayOfMonsters = (number) => {
   }
   return monsterArray;
 };
-function createHero() {
-  const heroPattern = /^[A-Z][A-Za-z]+$/;
-  while (true) {
-    let questionName = prompt(
-      `Hello champion! What is your name? Capitalize your name`,
-      "Anonymous"
-    );
-    if (questionName === null || heroPattern.test(questionName) === true) {
-      let player = new Hero(questionName || "Anonymous");
-      return player;
-    }
-  }
-}
-function checkMonsterNames(arr) {
+
+function checkMonsterNames(arr, msg1, msg2) {
   arr.forEach((monster) => {
     const monsterPattern = /^[a-zA-Z]+[0-9]?$/;
-    monster.name =
-      prompt(
-        `Do you want to change the name of ${monster.name}?`,
-        monster.name
-      ) || monster.name;
+    msg1(monster);
     while (monsterPattern.test(monster.name) === false) {
-      monster.name = prompt(
-        `Choose a valid name for this monster Ex: Monster1 !`,
-        monster.name
-      );
+      msg2(monster);
     }
   });
 }
@@ -89,8 +87,8 @@ export {
   Hero,
   Monster,
   status,
+  checkPlayerName,
   generateMonsterNumberOfEnemies,
   createArrayOfMonsters,
-  createHero,
   checkMonsterNames,
 };
