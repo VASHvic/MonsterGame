@@ -6,7 +6,7 @@ import {
   status,
 } from "../bussines-logic/logic.js";
 
-//Game starts, create and check hero and monsters + add monsters into an array of objs
+//Game starts, create and check hero and monsters
 let player;
 while (!player) {
   let questionName = prompt(
@@ -15,6 +15,7 @@ while (!player) {
   );
   player = checkPlayerName(questionName);
 }
+// Add the random monsters into an array of objs
 //prettier-ignore
 const monsterArray = createArrayOfMonsters(generateMonsterNumberOfEnemies());
 
@@ -27,7 +28,6 @@ checkMonsterNames(monsterArray, questionMonster1, questionMonster2);
 while (monsterArray[0]) {
   // saved the last monster of the stack for easier syntax
   let current_monster = monsterArray[monsterArray.length - 1];
-
   console.log(`Fighting against ${current_monster.name}!`);
   const action = prompt("Choose your next action: A to atack - H to heal", "A");
   switch (action) {
@@ -83,6 +83,7 @@ while (monsterArray[0]) {
 //chain of messages to show when the game ends
 setTimeout(() => resultOfGame(player), 2000);
 
+//The messages shown by setTimeout are above
 const resultOfGame = (player) => {
   if (player.escapes === true) {
     console.log(
@@ -130,6 +131,7 @@ function showRoundStatus(hero, monster, arr){
   );
 }
 
+//functions used to ask for the monster name when checking the name
 function questionMonster1(monster) {
   return (monster.name =
     prompt(
